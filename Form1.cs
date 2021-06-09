@@ -28,30 +28,28 @@ namespace PingPlotter
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             SuspendLayout();
-            //
+
             // chart1
-            //
-            chartArea1.Name = "Ping";
+            chartArea1.Name = "chart1";
             chart1.ChartAreas.Add(chartArea1);
             chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Ping (ms)";
+            legend1.Name = "legend1";
             chart1.Legends.Add(legend1);
             chart1.Location = new System.Drawing.Point(0, 50);
-            chart1.Name = "PingChart";
+            chart1.Name = "chart1";
             //this.chart1.Size = new System.Drawing.Size(284, 212);
             chart1.TabIndex = 0;
-            chart1.Text = "Ping";
+            chart1.Text = "chart1";
             chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            chart1.Titles.Add("Ping (ms) / Time (ms)");
-            //
+            chart1.Titles.Add("Ping (ms) / Time (s)");
+
             // Form1
-            //
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 600);
             Controls.Add(this.chart1);
             Name = "LineGraph";
-            Text = "Ping Monitor";
+            Text = "Ping Plotter";
             Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ResumeLayout(false);
@@ -82,8 +80,20 @@ namespace PingPlotter
                 IsXValueIndexed = true,
                 ChartType = SeriesChartType.Line
             };
+            
+            chart1.Series.Add(series1);
+            
+            //var series2 = new System.Windows.Forms.DataVisualization.Charting.Series
+            //{
+            //    Name = "Series2",
+            //    Color = System.Drawing.Color.Blue,
+            //    IsVisibleInLegend = false,
+            //    IsXValueIndexed = true,
+            //    ChartType = SeriesChartType.Line
+            //};
 
-            this.chart1.Series.Add(series1);          
+            //chart1.Series.Add(series2);
+
             sw.Start();
 
             chart1.Invalidate();
@@ -98,7 +108,26 @@ namespace PingPlotter
             elapsed += sw.Interval;
             Ping pingSender = new Ping();
             PingReply pingReceiver = pingSender.Send("8.8.8.8");
-            chart1.Series[0].Points.AddXY(elapsed, pingReceiver.RoundtripTime);
+            chart1.Series[0].Points.AddXY((elapsed / 1000) -0.1, pingReceiver.RoundtripTime);
+            //chart1.Series[1].Points.AddXY(elapsed, CheckInternetSpeed());
+        }
+
+        public double CheckInternetSpeed()
+        {
+            // Create Object Of WebClient
+            System.Net.WebClient wc = new System.Net.WebClient();
+
+            //DateTime Variable To Store Download Start Time.
+            DateTime dt1 = DateTime.Now;
+
+            //Number Of Bytes Downloaded Are Stored In ‘data’
+            byte[] data = wc.DownloadData("http://google.com");
+
+            //DateTime Variable To Store Download End Time.
+            DateTime dt2 = DateTime.Now;
+
+            //To Calculate Speed in Kb Divide Value Of data by 1024 And Then by End Time Subtract Start Time To Know Download Per Second.
+            return Math.Round((data.Length / 1024) / (dt2 - dt1).TotalSeconds, 2);
         }
 
     }
