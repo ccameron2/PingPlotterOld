@@ -19,6 +19,7 @@ namespace PingPlotter
         System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         public Timer sw = new Timer();
         public float elapsed = 0.0f;
+        public bool download = false;
         public Form1()
         {
             InitializeComponent();
@@ -59,43 +60,45 @@ namespace PingPlotter
 
         private void chart1_Click(object sender, EventArgs e)
         {
-            if (sw.Enabled)
+            if (download)
             {
-                sw.Stop();
+                download = false;
             }
             else
             {
-                sw.Start();
+                download = true;
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             chart1.Series.Clear();
-            var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+            if (!download)
             {
-                Name = "Series1",
-                Color = System.Drawing.Color.Green,
-                IsVisibleInLegend = false,
-                IsXValueIndexed = true,
-                ChartType = SeriesChartType.Line
-            };
+                var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+                {
+                    Name = "Ping",
+                    Color = System.Drawing.Color.Green,
+                    IsVisibleInLegend = false,
+                    IsXValueIndexed = true,
+                    ChartType = SeriesChartType.Line
+                };
+                chart1.Series.Add(series1);
+            }
+            else
+            {
+                var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+                {
+                    Name = "Download Speed",
+                    Color = System.Drawing.Color.Blue,
+                    IsVisibleInLegend = false,
+                    IsXValueIndexed = true,
+                    ChartType = SeriesChartType.Line
+                };
+                chart1.Series.Add(series1);
+            } 
             
-            chart1.Series.Add(series1);
-            
-            //var series2 = new System.Windows.Forms.DataVisualization.Charting.Series
-            //{
-            //    Name = "Series2",
-            //    Color = System.Drawing.Color.Blue,
-            //    IsVisibleInLegend = false,
-            //    IsXValueIndexed = true,
-            //    ChartType = SeriesChartType.Line
-            //};
-
-            //chart1.Series.Add(series2);
-
             sw.Start();
-
             chart1.Invalidate();
         }
 
@@ -103,13 +106,22 @@ namespace PingPlotter
         {
 
         }
+
         private void sw_Tick(object Sender, EventArgs e)
         {
             elapsed += sw.Interval;
-            Ping pingSender = new Ping();
-            PingReply pingReceiver = pingSender.Send("8.8.8.8");
-            chart1.Series[0].Points.AddXY((elapsed / 1000) -0.1, pingReceiver.RoundtripTime);
-            //chart1.Series[1].Points.AddXY(elapsed, CheckInternetSpeed());
+
+            if (!download)
+            {
+                Ping pingSender = new Ping();
+                PingReply pingReceiver = pingSender.Send("8.8.8.8");
+                chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, pingReceiver.RoundtripTime);
+            }
+            else
+            {
+                chart1.Series[0].Points.AddXY(elapsed, CheckInternetSpeed());
+            }
+
         }
 
         public double CheckInternetSpeed()
