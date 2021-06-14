@@ -162,7 +162,7 @@ namespace PingPlotter
                 button1.Text = "Ping";
                 button1.Update();
                 chart1.Titles.Clear();
-                chart1.Titles.Add("Download Speed (kb/s) / Time (ms)");
+                chart1.Titles.Add("Download Speed (kb/s) / Time (s)");
             }
             else
             {
@@ -173,7 +173,7 @@ namespace PingPlotter
                 button1.Text = "Download Speed";
                 button1.Update();
                 chart1.Titles.Clear();
-                chart1.Titles.Add(" Ping (ms) / Time (ms)");
+                chart1.Titles.Add(" Ping (ms) / Time (s)");
             }
         }
     }
