@@ -20,6 +20,29 @@ namespace PingPlotter
         public Timer sw = new Timer();
         public float elapsed = 0.0f;
         public bool download = false;
+        public int counter;
+        public long cumulativeRTT;
+        public long averageRTT;
+
+        System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+        {
+            Name = "Ping",
+            Color = System.Drawing.Color.Green,
+            IsVisibleInLegend = false,
+            IsXValueIndexed = true,
+            ChartType = SeriesChartType.Line
+        };
+
+        System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series
+        {
+            Name = "Download Speed",
+            Color = System.Drawing.Color.Blue,
+            IsVisibleInLegend = false,
+            IsXValueIndexed = true,
+            ChartType = SeriesChartType.Line
+        };
+
+
         public Form1()
         {
             InitializeComponent();
@@ -55,49 +78,25 @@ namespace PingPlotter
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ResumeLayout(false);
 
+            //Button
+            button1.Text = "Download Speed";
+
             sw.Tick += sw_Tick;
         }
 
         private void chart1_Click(object sender, EventArgs e)
         {
-            if (download)
-            {
-                download = false;
-            }
-            else
-            {
-                download = true;
-            }
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             chart1.Series.Clear();
-            if (!download)
-            {
-                var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
-                {
-                    Name = "Ping",
-                    Color = System.Drawing.Color.Green,
-                    IsVisibleInLegend = false,
-                    IsXValueIndexed = true,
-                    ChartType = SeriesChartType.Line
-                };
-                chart1.Series.Add(series1);
-            }
-            else
-            {
-                var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
-                {
-                    Name = "Download Speed",
-                    Color = System.Drawing.Color.Blue,
-                    IsVisibleInLegend = false,
-                    IsXValueIndexed = true,
-                    ChartType = SeriesChartType.Line
-                };
-                chart1.Series.Add(series1);
-            } 
+
             
+
+            chart1.Series.Add(series1);            
+           
             sw.Start();
             chart1.Invalidate();
         }
@@ -107,19 +106,24 @@ namespace PingPlotter
 
         }
 
-        private void sw_Tick(object Sender, EventArgs e)
+        private void sw_Tick(object sender, EventArgs e)
         {
-            elapsed += sw.Interval;
+            elapsed += sw.Interval;          
 
             if (!download)
             {
                 Ping pingSender = new Ping();
                 PingReply pingReceiver = pingSender.Send("8.8.8.8");
                 chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, pingReceiver.RoundtripTime);
+
+                cumulativeRTT += pingReceiver.RoundtripTime;
+                counter++;
+                averageRTT = cumulativeRTT / counter;
+                label1.Text = "Average ping: " + averageRTT.ToString() + "ms";
             }
             else
             {
-                chart1.Series[0].Points.AddXY(elapsed, CheckInternetSpeed());
+                chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, CheckInternetSpeed());
             }
 
         }
@@ -142,5 +146,35 @@ namespace PingPlotter
             return Math.Round((data.Length / 1024) / (dt2 - dt1).TotalSeconds, 2);
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!download)
+            {
+                chart1.Series.Clear();
+                chart1.Series.Add(series2);
+                elapsed = 0;
+                download = true;
+                button1.Text = "Ping";
+                button1.Update();
+                chart1.Titles.Clear();
+                chart1.Titles.Add("Download Speed (kb/s) / Time (ms)");
+            }
+            else
+            {
+                chart1.Series.Clear();
+                chart1.Series.Add(series1);
+                elapsed = 0;
+                download = false;
+                button1.Text = "Download Speed";
+                button1.Update();
+                chart1.Titles.Clear();
+                chart1.Titles.Add(" Ping (ms) / Time (ms)");
+            }
+        }
     }
 }
