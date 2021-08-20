@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Net.NetworkInformation;
 using System.Diagnostics;
+using System.Net;
 
 namespace PingPlotter
 {
@@ -23,6 +24,7 @@ namespace PingPlotter
         public int counter;
         public long cumulativeRTT;
         public long averageRTT;
+        public string IPAddress = "8.8.8.8";
 
         System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series
         {
@@ -91,9 +93,7 @@ namespace PingPlotter
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            chart1.Series.Clear();
-
-            
+            chart1.Series.Clear();         
 
             chart1.Series.Add(series1);            
            
@@ -113,7 +113,7 @@ namespace PingPlotter
             if (!download)
             {
                 Ping pingSender = new Ping();
-                PingReply pingReceiver = pingSender.Send("8.8.8.8");
+                PingReply pingReceiver = pingSender.Send(IPAddress);
                 chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, pingReceiver.RoundtripTime);
 
                 cumulativeRTT += pingReceiver.RoundtripTime;
@@ -146,35 +146,58 @@ namespace PingPlotter
             return Math.Round((data.Length / 1024) / (dt2 - dt1).TotalSeconds, 2);
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
+            ClearChart(chart1);
+            elapsed = 0;
             if (!download)
-            {
-                chart1.Series.Clear();
+            {              
                 chart1.Series.Add(series2);
-                elapsed = 0;
                 download = true;
                 button1.Text = "Ping";
                 button1.Update();
                 chart1.Titles.Clear();
                 chart1.Titles.Add("Download Speed (kb/s) / Time (s)");
+                label1.Hide();
+                button2.Hide();
+                button3.Hide();
+                label2.Hide();
             }
             else
             {
-                chart1.Series.Clear();
                 chart1.Series.Add(series1);
-                elapsed = 0;
                 download = false;
                 button1.Text = "Download Speed";
                 button1.Update();
                 chart1.Titles.Clear();
                 chart1.Titles.Add(" Ping (ms) / Time (s)");
+                label1.Show();
+                button2.Show();
+                button3.Show();
+                label2.Show();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ClearChart(chart1);
+            IPAddress = "1.1.1.1";
+            chart1.Series.Add(series1);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ClearChart(chart1);
+            IPAddress = "8.8.8.8";
+            chart1.Series.Add(series1);
+        }
+        private void ClearChart(System.Windows.Forms.DataVisualization.Charting.Chart chart)
+        {
+            foreach (var series in chart.Series)
+            {
+                series.Points.Clear();
+            }
+            chart.Series.Clear();
         }
     }
 }
