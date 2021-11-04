@@ -57,6 +57,7 @@ namespace PingPlotter
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.AutoEllipsis = true;
             this.button2.Location = new System.Drawing.Point(729, 30);
             this.button2.Name = "button2";
@@ -68,6 +69,7 @@ namespace PingPlotter
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.AutoEllipsis = true;
             this.button3.Location = new System.Drawing.Point(672, 30);
             this.button3.Name = "button3";
@@ -79,6 +81,7 @@ namespace PingPlotter
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(708, 14);
             this.label2.Name = "label2";
