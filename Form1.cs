@@ -48,47 +48,11 @@ namespace PingPlotter
         public Form1()
         {
             InitializeComponent();
-            //components = new System.ComponentModel.Container();
-            //System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            //System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            //chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            //((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            //SuspendLayout();
-
-            // chart1
-            //chartArea1.Name = "chart1";
-            //chart1.ChartAreas.Add(chartArea1);
-            //chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            //legend1.Name = "legend1";
-            //chart1.Legends.Add(legend1);
-            //chart1.Location = new System.Drawing.Point(0, 50);
-            //chart1.Name = "chart1";
-            ////this.chart1.Size = new System.Drawing.Size(284, 212);
-            //chart1.TabIndex = 0;
-            //chart1.Text = "chart1";
-            //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            //chart1.Titles.Add("Ping (ms) / Time (s)");
-
-            // Form1
-            //AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            //AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            //ClientSize = new System.Drawing.Size(800, 600);
-            //Controls.Add(this.chart1);
-            //Name = "LineGraph";
-            //Text = "Ping Plotter";
-            //Load += new System.EventHandler(this.Form1_Load);
-            //((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            //ResumeLayout(false);
 
             //Button
             button1.Text = "Download Speed";
 
             sw.Tick += sw_Tick;
-        }
-
-        private void chart1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -99,11 +63,6 @@ namespace PingPlotter
            
             sw.Start();
             chart1.Invalidate();
-        }
-
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
         }
 
         private void sw_Tick(object sender, EventArgs e)
@@ -161,6 +120,7 @@ namespace PingPlotter
                 label1.Hide();
                 button2.Hide();
                 button3.Hide();
+                button4.Hide();
                 label2.Hide();
             }
             else
@@ -174,6 +134,7 @@ namespace PingPlotter
                 label1.Show();
                 button2.Show();
                 button3.Show();
+                button4.Show();
                 label2.Show();
             }
         }
@@ -198,6 +159,22 @@ namespace PingPlotter
                 series.Points.Clear();
             }
             chart.Series.Clear();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ClearChart(chart1);
+            elapsed = 0;
+            chart1.Series.Add(series1);
+            download = false;
+            button1.Text = "Download Speed";
+            button1.Update();
+            chart1.Titles.Clear();
+            chart1.Titles.Add(" Ping (ms) / Time (s)");
+            label1.Show();
+            button2.Show();
+            button3.Show();
+            label2.Show();
         }
     }
 }
