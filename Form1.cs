@@ -17,7 +17,7 @@ namespace PingPlotter
 
     public partial class Form1 : Form
     {
-        System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        //System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         public Timer sw = new Timer();
         public float elapsed = 0.0f;
         public bool download = false;
@@ -48,37 +48,37 @@ namespace PingPlotter
         public Form1()
         {
             InitializeComponent();
-            components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            SuspendLayout();
+            //components = new System.ComponentModel.Container();
+            //System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            //System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            //chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            //((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            //SuspendLayout();
 
             // chart1
-            chartArea1.Name = "chart1";
-            chart1.ChartAreas.Add(chartArea1);
-            chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "legend1";
-            chart1.Legends.Add(legend1);
-            chart1.Location = new System.Drawing.Point(0, 50);
-            chart1.Name = "chart1";
-            //this.chart1.Size = new System.Drawing.Size(284, 212);
-            chart1.TabIndex = 0;
-            chart1.Text = "chart1";
-            chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            chart1.Titles.Add("Ping (ms) / Time (s)");
+            //chartArea1.Name = "chart1";
+            //chart1.ChartAreas.Add(chartArea1);
+            //chart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            //legend1.Name = "legend1";
+            //chart1.Legends.Add(legend1);
+            //chart1.Location = new System.Drawing.Point(0, 50);
+            //chart1.Name = "chart1";
+            ////this.chart1.Size = new System.Drawing.Size(284, 212);
+            //chart1.TabIndex = 0;
+            //chart1.Text = "chart1";
+            //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
+            //chart1.Titles.Add("Ping (ms) / Time (s)");
 
             // Form1
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 600);
-            Controls.Add(this.chart1);
-            Name = "LineGraph";
-            Text = "Ping Plotter";
-            Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ResumeLayout(false);
+            //AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            //AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //ClientSize = new System.Drawing.Size(800, 600);
+            //Controls.Add(this.chart1);
+            //Name = "LineGraph";
+            //Text = "Ping Plotter";
+            //Load += new System.EventHandler(this.Form1_Load);
+            //((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            //ResumeLayout(false);
 
             //Button
             button1.Text = "Download Speed";
