@@ -108,7 +108,6 @@ namespace PingPlotter
         private void button1_Click(object sender, EventArgs e)
         {
             ClearChart(chart1);
-            elapsed = 0;
             if (!download)
             {              
                 chart1.Series.Add(series2);
@@ -154,6 +153,8 @@ namespace PingPlotter
         }
         private void ClearChart(System.Windows.Forms.DataVisualization.Charting.Chart chart)
         {
+            elapsed = 0;
+            averageRTT = 0;             
             foreach (var series in chart.Series)
             {
                 series.Points.Clear();
@@ -163,8 +164,7 @@ namespace PingPlotter
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ClearChart(chart1);
-            elapsed = 0;
+            ClearChart(chart1);           
             chart1.Series.Add(series1);
             download = false;
             button1.Text = "Download Speed";
