@@ -85,7 +85,6 @@ namespace PingPlotter
                 {
                     backgroundWorker1.RunWorkerAsync();
                 }
-                //UpdateGraph();
             }
             else
             {
