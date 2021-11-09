@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -18,13 +19,14 @@ namespace PingPlotter
     public partial class Form1 : Form
     {
         //System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        public Timer sw = new Timer();
+        public System.Windows.Forms.Timer sw = new System.Windows.Forms.Timer();
         public float elapsed = 0.0f;
         public bool download = false;
         public int counter;
         public long cumulativeRTT;
         public long averageRTT;
         public string IPAddress = "8.8.8.8";
+        public long RTT;
 
         System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series
         {
@@ -67,18 +69,23 @@ namespace PingPlotter
 
         private void sw_Tick(object sender, EventArgs e)
         {
-            elapsed += sw.Interval;          
-
+            elapsed += sw.Interval;
+            //long RTT = 0;
+            //var thread = new Thread(() =>
+            //{
+            //    Ping pingSender = new Ping();
+            //    PingReply pingReceiver = pingSender.Send(IPAddress);
+            //    RTT = pingReceiver.RoundtripTime;
+            //});
+            //thread.IsBackground = true;
+            //thread.Start();
             if (!download)
             {
-                Ping pingSender = new Ping();
-                PingReply pingReceiver = pingSender.Send(IPAddress);
-                chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, pingReceiver.RoundtripTime);
-
-                cumulativeRTT += pingReceiver.RoundtripTime;
-                counter++;
-                averageRTT = cumulativeRTT / counter;
-                label1.Text = "Average ping: " + averageRTT.ToString() + "ms";
+                if (!backgroundWorker1.IsBusy)
+                {
+                    backgroundWorker1.RunWorkerAsync();
+                }
+                //UpdateGraph();
             }
             else
             {
@@ -175,6 +182,28 @@ namespace PingPlotter
             button2.Show();
             button3.Show();
             label2.Show();
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Ping pingSender = new Ping();
+            PingReply pingReceiver = pingSender.Send(IPAddress);
+            RTT = pingReceiver.RoundtripTime;
+            e.Result = RTT;
+            //MessageBox.Show(RTT.ToString());
+        }
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            UpdateGraph();
+        }
+
+        private void UpdateGraph()
+        {
+            chart1.Series[0].Points.AddXY((elapsed / 1000) - 0.1, RTT);
+            cumulativeRTT += RTT;
+            counter++;
+            averageRTT = cumulativeRTT / counter;
+            label1.Text = "Average ping: " + averageRTT.ToString() + "ms";
         }
     }
 }
