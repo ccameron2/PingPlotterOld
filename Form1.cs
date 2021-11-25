@@ -27,7 +27,7 @@ namespace PingPlotter
         public long averageRTT;
         public string IPAddress = "8.8.8.8";
         public long RTT;
-
+        double maxYValue = 0;
 
         System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series
         {
@@ -204,19 +204,30 @@ namespace PingPlotter
             averageRTT = cumulativeRTT / counter;
             if(label1 != null) { label1.Text = "Average ping: " + averageRTT.ToString() + "ms"; }
             label1.Text = "Average ping: " + averageRTT.ToString() + "ms";
+            //updateMaxY();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            double maxYValue = trackBar1.Value;
+            maxYValue = trackBar1.Value;
+            updateMaxY();
+        }
+
+        private void updateMaxY()
+        {
             DataPoint maxYPoint;
             if (maxYValue == 0)
             {
-                maxYPoint = chart1.Series[0].Points.FindMaxByValue("Y1", 0);
-                double[] arrayY = maxYPoint.YValues;
-                maxYValue = arrayY[0];                
+                //maxYPoint = chart1.Series[0].Points.FindMaxByValue("Y1", 0);
+                //double[] arrayY = maxYPoint.YValues;
+                //maxYValue = arrayY[0];
+                chart1.ChartAreas[0].AxisY.Maximum = Double.NaN;
             }
-            chart1.ChartAreas[0].AxisY.Maximum = maxYValue;
+            else
+            {
+                chart1.ChartAreas[0].AxisY.Maximum = maxYValue;
+            }
+
         }
     }
 }
