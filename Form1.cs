@@ -114,35 +114,35 @@ namespace PingPlotter
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ClearChart(chart1);
-            if (!download)
-            {              
-                chart1.Series.Add(series2);
-                download = true;
-                button1.Text = "Ping";
-                button1.Update();
-                chart1.Titles.Clear();
-                chart1.Titles.Add("Download Speed (kb/s) / Time (s)");
-                label1.Hide();
-                button2.Hide();
-                button3.Hide();
-                button4.Hide();
-                label2.Hide();
-            }
-            else
-            {
-                chart1.Series.Add(series1);
-                download = false;
-                button1.Text = "Download Speed";
-                button1.Update();
-                chart1.Titles.Clear();
-                chart1.Titles.Add(" Ping (ms) / Time (s)");
-                label1.Show();
-                button2.Show();
-                button3.Show();
-                button4.Show();
-                label2.Show();
-            }
+            //ClearChart(chart1);
+            //if (!download)
+            //{
+            //    chart1.Series.Add(series2);
+            //    download = true;
+            //    button1.Text = "Ping";
+            //    button1.Update();
+            //    chart1.Titles.Clear();
+            //    chart1.Titles.Add("Download Speed (kb/s) / Time (s)");
+            //    label1.Hide();
+            //    button2.Hide();
+            //    button3.Hide();
+            //    button4.Hide();
+            //    label2.Hide();
+            //}
+            //else
+            //{
+            //    chart1.Series.Add(series1);
+            //    download = false;
+            //    button1.Text = "Download Speed";
+            //    button1.Update();
+            //    chart1.Titles.Clear();
+            //    chart1.Titles.Add(" Ping (ms) / Time (s)");
+            //    label1.Show();
+            //    button2.Show();
+            //    button3.Show();
+            //    button4.Show();
+            //    label2.Show();
+            //}
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -161,7 +161,8 @@ namespace PingPlotter
         private void ClearChart(System.Windows.Forms.DataVisualization.Charting.Chart chart)
         {
             elapsed = 0;
-            averageRTT = 0;             
+            averageRTT = 0;
+            cumulativeRTT = 0;
             foreach (var series in chart.Series)
             {
                 series.Points.Clear();
